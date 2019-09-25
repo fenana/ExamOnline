@@ -1,0 +1,211 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.exam.dao.IExamScoreDao" >
+  <resultMap id="BaseResultMap" type="com.exam.model.ExamScore" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="student_email" property="studentEmail" jdbcType="VARCHAR" />
+    <result column="exam_id" property="examId" jdbcType="INTEGER" />
+    <result column="total_score" property="totalScore" jdbcType="INTEGER" />
+    <result column="total_point" property="totalPoint" jdbcType="INTEGER" />
+  </resultMap>
+  <sql id="Example_Where_Clause" >
+    <where >
+      <foreach collection="oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause" >
+    <where >
+      <foreach collection="example.oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List" >
+    id, student_email, exam_id, total_score, total_point
+  </sql>
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.exam.model.ExamScoreExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from exam_score
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from exam_score
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from exam_score
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.exam.model.ExamScoreExample" >
+    delete from exam_score
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.exam.model.ExamScore" >
+    insert into exam_score (id, student_email, exam_id, 
+      total_score, total_point)
+    values (#{id,jdbcType=INTEGER}, #{studentEmail,jdbcType=VARCHAR}, #{examId,jdbcType=INTEGER}, 
+      #{totalScore,jdbcType=INTEGER}, #{totalPoint,jdbcType=INTEGER})
+  </insert>
+  <insert id="insertSelective" parameterType="com.exam.model.ExamScore" >
+    insert into exam_score
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="studentEmail != null" >
+        student_email,
+      </if>
+      <if test="examId != null" >
+        exam_id,
+      </if>
+      <if test="totalScore != null" >
+        total_score,
+      </if>
+      <if test="totalPoint != null" >
+        total_point,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="studentEmail != null" >
+        #{studentEmail,jdbcType=VARCHAR},
+      </if>
+      <if test="examId != null" >
+        #{examId,jdbcType=INTEGER},
+      </if>
+      <if test="totalScore != null" >
+        #{totalScore,jdbcType=INTEGER},
+      </if>
+      <if test="totalPoint != null" >
+        #{totalPoint,jdbcType=INTEGER},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.exam.model.ExamScoreExample" resultType="java.lang.Integer" >
+    select count(*) from exam_score
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map" >
+    update exam_score
+    <set >
+      <if test="record.id != null" >
+        id = #{record.id,jdbcType=INTEGER},
+      </if>
+      <if test="record.studentEmail != null" >
+        student_email = #{record.studentEmail,jdbcType=VARCHAR},
+      </if>
+      <if test="record.examId != null" >
+        exam_id = #{record.examId,jdbcType=INTEGER},
+      </if>
+      <if test="record.totalScore != null" >
+        total_score = #{record.totalScore,jdbcType=INTEGER},
+      </if>
+      <if test="record.totalPoint != null" >
+        total_point = #{record.totalPoint,jdbcType=INTEGER},
+      </if>
+    </set>
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map" >
+    update exam_score
+    set id = #{record.id,jdbcType=INTEGER},
+      student_email = #{record.studentEmail,jdbcType=VARCHAR},
+      exam_id = #{record.examId,jdbcType=INTEGER},
+      total_score = #{record.totalScore,jdbcType=INTEGER},
+      total_point = #{record.totalPoint,jdbcType=INTEGER}
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.exam.model.ExamScore" >
+    update exam_score
+    <set >
+      <if test="studentEmail != null" >
+        student_email = #{studentEmail,jdbcType=VARCHAR},
+      </if>
+      <if test="examId != null" >
+        exam_id = #{examId,jdbcType=INTEGER},
+      </if>
+      <if test="totalScore != null" >
+        total_score = #{totalScore,jdbcType=INTEGER},
+      </if>
+      <if test="totalPoint != null" >
+        total_point = #{totalPoint,jdbcType=INTEGER},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.exam.model.ExamScore" >
+    update exam_score
+    set student_email = #{studentEmail,jdbcType=VARCHAR},
+      exam_id = #{examId,jdbcType=INTEGER},
+      total_score = #{totalScore,jdbcType=INTEGER},
+      total_point = #{totalPoint,jdbcType=INTEGER}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+</mapper>

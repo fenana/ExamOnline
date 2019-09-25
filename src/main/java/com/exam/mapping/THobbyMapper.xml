@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.exam.dao.IHobbyDao" >
+
+  <!-- 以xml方式对该实体类，再次说明 -->
+  <resultMap id="BaseResultMap" type="com.exam.model.THobbyModel" >
+    <id column="HobbyID" property="HobbyID" jdbcType="INTEGER" />
+    <result column="HobbyName" property="HobbyName" jdbcType="VARCHAR" />
+  </resultMap>
+  <!-- 以xml方式对该实体类，再次说明 -->
+  
+  <!-- 操作实现类（xml）  mybatis根据xml将自动java代码 -->
+  <insert id="insert" parameterType="com.exam.model.THobbyModel" >
+    insert into T_Hobby (HobbyID, HobbyName)
+    values (#{HobbyID,jdbcType=INTEGER}, #{HobbyName,jdbcType=VARCHAR})
+  </insert>
+  
+</mapper>

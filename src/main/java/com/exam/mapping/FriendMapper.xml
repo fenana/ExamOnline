@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.exam.dao.IFriendDao">
+
+<!--    添加数据-->
+    <insert id="add" parameterType="com.exam.model.Friend" >
+        <!-- 写sql语句 -->
+        insert into friend(name, motto) values(#{friend.name}, #{friend.motto})
+    </insert>
+    <!--    查询数据-->
+    <resultMap id="FriendMap" type="com.exam.model.Friend" >
+        <!-- id 此外代表主键字段 column表示数据库字段名  property表示实体类中的属性名 -->
+        <id column="id" property="id"/>
+        <result column="name" property="name"/>
+        <result column="motto" property="motto"/>
+    </resultMap>
+    <!-- select -->
+    <select id="findAll" resultMap="FriendMap" >
+		select * from friend
+	</select>
+    <!--    删除数据-->
+    <delete id="delete" parameterType="java.lang.Integer">
+        delete from friend where id = #{id}
+    </delete>
+
+    <!-- 分页查询  limit 偏移量（行号-1）, 记录数-->
+    <select id="findAllPaging" resultMap="FriendMap" parameterType="map">
+		select * from friend limit #{sPos}, #{ePos}
+	</select>
+   <select id="findById" parameterType="java.lang.Integer" resultType="com.exam.model.Friend" >
+        select * from friend where id = #{1}
+    </select>
+</mapper>

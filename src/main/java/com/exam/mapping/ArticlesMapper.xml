@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<!-- 用xml去实现那个接口 -->
+
+<mapper namespace="com.exam.dao.IArticlesDao">
+
+	<!--DDL 手工逆向建表维护-->
+	<update id="alterTableName">
+        alter table ${originalTableName} rename ${newTableName}
+    </update>
+
+	<update id="truncateTable">
+        truncate table ${tableName}
+    </update>
+
+	<update id="createNewTableAndInsertData">
+        create table ${newTableName} as select * from ${originalTableName}
+    </update>
+
+	<update id="createNewTable">
+		create table if not exists Articles
+		(
+			articleId           int      		NOT NULL AUTO_INCREMENT,
+			title       		varchar(50)     NOT NULL,
+			content        		text      		NOT NULL,
+			PRIMARY KEY (articleId) USING BTREE
+		)
+    </update>
+
+
+	<!--DML 操作示例 insert update delete这种语句 -->
+	<insert id="add" parameterType="com.exam.model.Articles" >
+		<!-- 写sql语句 -->
+		insert into Articles(title, content) values(#{title}, #{content})
+	</insert>
+	
+	<delete id="delete" parameterType="java.lang.Integer" >
+		<!-- 写sql语句 -->
+		delete from Articles where articleId = #{1}
+	</delete>
+	
+	<update id="update" parameterType="com.exam.model.Articles" >
+		<!-- 写sql语句 -->
+		update Articles set title=#{title}, content=#{content} where articleId = #{articleId}
+	</update>
+	
+	<!-- List<Articles> -->
+	<resultMap id="ArticleMap" type="com.exam.model.Articles" >
+	    <!-- id 此外代表主键字段 column表示数据库字段名  property表示实体类中的属性名 -->
+	    <id column="articleId" property="articleId"/>
+	    <result column="title" property="title"/>
+	    <result column="content" property="content"/>
+  	</resultMap>
+	<!-- select -->
+	<select id="findAll" resultMap="ArticleMap" >
+		select * from Articles
+	</select>
+
+	<!-- 分页查询  limit 偏移量（行号-1）, 记录数-->
+	<select id="findAllPaging" resultMap="ArticleMap" parameterType="map">
+		select * from Articles limit #{sPos}, #{ePos}
+	</select>
+	
+	<select id="findById" parameterType="java.lang.Integer" resultType="com.exam.model.Articles">
+		select * from Articles where articleId = #{1}
+	</select>
+	
+	<!-- 执行所有语句 <sql></sql>-->
+
+
+	<!--DML 操作示例扩展-->
+	<select id="getRecordCount" resultType="int">
+        select count(1) from ${tableName}
+    </select>
+
+	<select id="getCurDataBaseName" resultType="string">
+        select database();
+    </select>
+
+	<select id="isTargetTableExistInDB" resultType="string">
+        SELECT table_name FROM information_schema.tables WHERE table_schema = #{dataBaseName} and TABLE_NAME = #{tableName}
+    </select>
+	
+
+</mapper>
